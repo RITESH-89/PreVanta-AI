@@ -1,315 +1,468 @@
-<div align="center">
-
 # 🛡️ PreVanta AI
 
-### Agentic Compound-Risk Intelligence for Zero-Harm Industrial Operations
+## Predictive Safety Intelligence & SIF Precursor Detection Platform
 
-*Fuse gas sensors, permits, CCTV and shift logs into one predictive layer that detects the dangerous **combinations** no single sensor sees — and acts before a fatality, not after.*
+> From fragmented safety reports to explainable early-warning intelligence.
 
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-Vite%20SPA-61DAFB?logo=react&logoColor=black)
-![LangGraph](https://img.shields.io/badge/LangGraph-multi--agent-1C3C3C)
-![Tests](https://img.shields.io/badge/tests-139%20pytest%20%2B%2016%20acceptance-2ecc71)
-![Offline](https://img.shields.io/badge/mode-offline--capable-f1c40f)
+![Smart India Hackathon 2026](https://img.shields.io/badge/Smart%20India%20Hackathon-2026-ff9933)
+![SIH26165](https://img.shields.io/badge/SIH26165-Software-1f6feb)
+![React](https://img.shields.io/badge/React-Vite-61dafb)
+![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688)
+![Status](https://img.shields.io/badge/Status-Prototype-f1c40f)
 
-</div>
-
----
-
-## 📌 The problem
-
-> India's DGFASLI recorded **6,500+ fatal workplace accidents in FY2023**. In January 2025, **eight workers died** at the Visakhapatnam Steel Plant coke-oven when entrapped gases exploded — a facility that *had* working gas detectors, permits and SCADA. The warning signals existed; **nothing connected them in time.**
-
-The gap is not sensors. It is the missing **intelligence layer** that fuses disparate signals into a real-time, predictive risk picture and acts on it. PreVanta AI is that layer.
+PreVanta AI is being developed for **Smart India Hackathon 2026**, Problem Statement **SIH26165**, for **Oil India Limited (OIL)**.
 
 ---
 
-## 🎯 The headline result — the metric that saves lives
+## 📌 Project Overview
 
-PS1's decisive metric is *"reduction in false-negative rate."* We measure it honestly on a **physics-labeled** benchmark with **detector-independent ground truth** (`tools/benchmark.py`, stable across random seeds):
+PreVanta AI is a human-in-the-loop decision-support platform for turning fragmented **Unsafe Act**, **Unsafe Condition**, **Near Miss**, and related safety narratives into explainable early-warning intelligence. The intended outcome is identification of **Serious Injury and Fatality (SIF) precursor characteristics**, recurring patterns, control failures, and priority areas for safety review.
 
-| Detector | Missed incidents (operational) | False alarms | Median early warning |
-| :-- | :--: | :--: | :--: |
-| Single-sensor · evacuation-grade alarms | **21 / 26** (blind to conjunctions) | ~0% | — |
-| Single-sensor · sensitive alarms | 0 / 26 | **100%** (alarm fatigue) | 31 min |
-| **Compound + prediction (ours)** | **0 / 26** | **~0–3%** | **~18–19 min** |
+The repository currently contains a working industrial-safety prototype: sensor/permit risk assessment, safety-reference retrieval, structured incident-pattern utilities, a small plant knowledge graph, image hazard inspection, and audit logging. It **does not yet contain the SIH report-ingestion and SIF-narrative analysis pipeline**. Those capabilities are explicitly marked **Planned**.
 
-> Single sensors force an impossible trade-off — go **blind** to sub-threshold conjunctions, *or* **drown** operators in false alarms. Our engine fuses **gas + permit + confinement + maintenance + shift-changeover + trend** to escape it: it catches every incident on the benchmark, early, without crying wolf.
-> 
-> **₹ Financial Impact**: In our benchmark, the 81-point reduction in operational false negatives prevented 21 major incidents. Using illustrative unit-cost assumptions (₹50L/incident, ₹10L/compliance fine — not a verified industry figure), that's ~₹12.6Cr in avoided liability across the 26-incident benchmark set.
->
-> *Counts are on the synthetic benchmark; real-world rates depend on sensor coverage and are non-zero — the point is the large, defensible gap vs single-sensor baselines.*
+PreVanta does not predict an exact fatality, an exact probability of death, or when a fatality will occur. It supports informed human safety decisions.
 
----
+## 🎯 Smart India Hackathon 2026
 
-## 🏗️ System architecture
+| Item | Details |
+|---|---|
+| Problem Statement ID | SIH26165 |
+| Problem Statement | AI/NLP Engine to Detect Serious Injury & Fatality (SIF) Precursors in OIL's Unsafe-Act/Unsafe-Condition and Near-Miss Reports |
+| Organization | Oil India Limited (OIL) |
+| Category | Software |
+| Theme | Smart Automation |
+| Project Name | PreVanta AI |
+| Domain | Predictive safety intelligence and SIF precursor detection |
 
-```mermaid
+## 🚨 The Problem
+
+Narrative safety reports can contain early signals of high-consequence scenarios, yet similar hazards are described in different words, information is fragmented, control failures may be implicit, and recurring patterns can be missed in manual review. SIH26165 requires explainable analysis that helps safety teams identify potentially important precursor characteristics, connect reports to corrective action, and prioritize review.
+
+## 💡 Our Solution
+
+~~~text
+Safety Report → Preprocessing → NLP Understanding → Entity Extraction
+→ SIF Precursor Detection → Precursor DNA → Semantic Similarity
+→ Recurring Pattern Detection → Safety Knowledge Graph → Risk Priority
+→ Explainability → Corrective Action → Tracking → Verification
+→ Continuous Improvement
+~~~
+
+This is the PreVanta product direction. The current repository supplies reusable prototype components, rather than a complete report-NLP workflow.
+
+## 🧠 What Is a SIF Precursor?
+
+A SIF precursor is an observable characteristic or combination of circumstances that may indicate a potentially high-consequence safety scenario. It is a reason to investigate and strengthen controls—not a guarantee that a serious injury or fatality will happen.
+
+## ⭐ Why PreVanta AI?
+
+| Basic approach | PreVanta direction |
+|---|---|
+| Report → Classification | Report → Understand → Detect → Explain → Connect → Prioritize → Recommend → Track → Verify |
+
+A label alone is not enough for a safety decision. PreVanta is intended to retain evidence, relate similar descriptions, expose relevant controls and failure signals, and keep a human reviewer in the decision loop.
+
+## 🏗️ System Architecture
+
+The architecture distinguishes current repository components from the planned SIH report-intelligence path.
+
+~~~mermaid
 flowchart TB
-    subgraph Client["🖥️ React + Vite SPA (dark command center)"]
-        UI["8 tabs · live scans · Leaflet map · voice · charts"]
-    end
+    A[Current inputs: sensor, permit, image, knowledge query] --> B[FastAPI backend]
+    B --> C[Safety and compliance assessment]
+    B --> D[Safety-reference retrieval]
+    B --> E[Image hazard inspection]
+    C --> F[Audit trail and current dashboard]
+    D --> F
+    E --> F
+    P[Planned safety report narrative] --> Q[Planned preprocessing and NLP]
+    Q --> R[Planned SIF precursor detection and Precursor DNA]
+    R --> S[Planned similarity and report knowledge graph]
+    S --> T[Planned explainable priority and action workflow]
+    T --> U[Planned SIF dashboard]
+~~~
 
-    subgraph Backend["⚡ Warm FastAPI backend  (backend/main.py)"]
-        API["/api/* — ~20ms scans · loads once · lazy heavy stack"]
-    end
+### Current implementation
 
-    subgraph Core["🧠 Core Python (imported by backend)"]
-        ORCH["LangGraph Orchestrator + 5 agents"]
-        RISK["Graduated + rule compound-risk"]
-        BENCH["Physics benchmark · forecast"]
-        KG["Knowledge graph · incidents"]
-        AUD["SHA-256 hash-chained audit"]
-    end
+- FastAPI backend with React/Vite client.
+- Deterministic sensor/permit risk and compliance assessment.
+- ChromaDB retrieval over local safety-reference material using all-MiniLM-L6-v2, with extractive fallback and optional Gemini synthesis.
+- NetworkX graph for prototype zone, equipment, permit, and elevated-gas relationships.
+- Structured incident utility that ranks permit/root-cause patterns and retrieves records by permit, zone, gas, and oxygen fields.
+- OpenCV image-hazard fallback, optional Gemini vision, and SHA-256 hash-chained JSONL audit logging.
 
-    subgraph Data["📚 Deterministic + local"]
-        RULES["20 rules · OISD/Factory Act/DGMS"]
-        CHROMA["ChromaDB + MiniLM RAG"]
-        MODEL["offline hazard model (.npz)"]
-    end
+### Planned for SIH26165
 
-    Cloud["☁️ Gemini API (optional)"]
+- Narrative report upload, preprocessing, entity extraction, SIF precursor detection, and Precursor DNA.
+- Semantic report similarity, a report-oriented knowledge graph, corrective-action tracking, and verification.
 
-    UI -->|HTTP JSON| API
-    API --> ORCH --> RISK & KG & AUD
-    API --> BENCH
-    ORCH --> RULES & CHROMA & MODEL
-    API -. "if GEMINI_API_KEY set" .-> Cloud
-    Cloud -. "vision + RAG synthesis" .-> API
-    Core -. "auto offline fallback" .-> API
+## 🔄 End-to-End Workflow
 
-    classDef cloud fill:#1a2a3a,stroke:#22d3ee,color:#e6ecf5;
-    class Cloud cloud;
-```
-
-**Two-tier, hybrid, offline-first.** The React SPA is served by the FastAPI backend at a
-single URL. Gemini adds cloud-grade vision + grounded RAG **when a key is present**; on
-any absence, failure, or rate-limit the system **falls back to the fully-offline path
-automatically** — the pitch is *"cloud-accurate when connected, functional when air-gapped."*
-*(A legacy all-in-one Streamlit app also ships in `ui/app.py`.)*
-
----
-
-## 🔄 The 5-agent LangGraph pipeline
-
-```mermaid
+~~~mermaid
 flowchart LR
-    IN(["Typed input:<br>image · sensor · query · full_scan"]) --> R{"Orchestrator<br>router"}
-    R -->|image| V["👁️ VisionAgent<br>Gemini → offline OpenCV+model"]
-    R -->|sensor| S["⚠️ SafetyAgent<br>compound risk 0–100"]
-    R -->|sensor| C["📋 ComplianceAgent<br>20 deterministic rules"]
-    R -->|query| K["📚 KnowledgeAgent<br>grounded ChromaDB RAG"]
-    V & S & C & K --> O["🔊 OutputAgent<br>format + multilingual briefing"]
-    O --> RES(["OrchestratorResult<br>typed · auditable"])
+    A[REPORT] --> B[UNDERSTAND] --> C[EXTRACT] --> D[DETECT]
+    D --> E[EXPLAIN] --> F[CONNECT] --> G[PRIORITIZE]
+    G --> H[RECOMMEND] --> I[TRACK] --> J[VERIFY] --> K[IMPROVE]
+~~~
 
-    classDef a fill:#141a24,stroke:#22d3ee,color:#e6ecf5;
-    class V,S,C,K,O a;
-```
+All stages in this report-oriented flow are planned; the present repository contains prototype foundations, not an implementation of this end-to-end SIF flow.
 
-Contract-first: every agent takes a typed `*Input` dataclass and returns its `*Result`
-dataclass from the **immutable** `schema.py`. Nodes return update dicts only; a single
-failing agent never crashes the run.
+## 🧹 1. Data Preprocessing
 
----
+**Status: Planned.** No code currently accepts, cleans, normalizes, de-duplicates, or structures Unsafe-Act, Unsafe-Condition, Near-Miss, or other narrative reports. A production pipeline must use OIL-approved fields, terminology, retention, and access controls.
 
-## ⚙️ A live compound-risk scan
+## 🧠 2. NLP & Semantic Understanding
 
-```mermaid
-sequenceDiagram
-    participant U as Operator (SPA)
-    participant B as FastAPI /api/scan
-    participant SA as SafetyAgent (rule)
-    participant RM as risk_model (graduated)
-    participant CA as ComplianceAgent
-    participant EX as confidence · interventions · limits
+**Status: Partial foundation.** The knowledge-base builder chunks local PDF, text, and Markdown safety-reference material and indexes it in ChromaDB. The knowledge agent uses all-MiniLM-L6-v2 for retrieval, with an extractive fallback and optional Gemini-grounded synthesis.
 
-    U->>B: reading + active permits
-    B->>SA: auditable rule score + triggers
-    B->>RM: continuous 0–100 + per-factor breakdown
-    B->>CA: OISD/Factory Act/DGMS violations
-    B->>EX: confidence, ranked interventions, limit check
-    B-->>U: risk + why + "revoke permit → risk 100→20" + single-vs-compound
-    Note over B: event appended to SHA-256 hash-chained audit log
-```
+This is document question-answering, not narrative safety-report understanding. Report entity extraction, classification, and SIF semantic interpretation are planned.
 
-## 🏆 What We Built During This Hackathon
-*To preempt the question of scope:* This entire system—from the 5-agent LangGraph pipeline to the React/FastAPI stack, SQLite edge TSDB, bespoke PyTorch ViT head, offline RAG, geospatial analytics, and the synthetic physics-based benchmark generator—was conceived, architected, and built **during this hackathon**. We relied on standard base models (MiniLM, ViT-base) and open-source primitives (FastAPI, React), but every line of the agent logic, risk modeling, and orchestration is original work from this sprint.
+## 🚨 3. SIF Precursor Detection
 
----
+**Status: Planned.** No SIF report taxonomy or SIF precursor classifier exists in the repository. The proposed taxonomy is subject to validation against available OIL data and domain-expert requirements; it is not an official OIL taxonomy.
 
-## 🧪 How the benchmark proves it (no test-gaming)
+## 🧬 4. Precursor DNA
 
-```mermaid
-flowchart TD
-    G["scenario_generator.py<br>physics-labeled time-series"] --> GT{"Ground truth = published limits<br>H₂S IDLH · O₂ below 16% · gas+ignition+confined"}
-    GT --> D1["single-sensor (evac-grade)"]
-    GT --> D2["single-sensor (sensitive)"]
-    GT --> D3["compound (reactive)"]
-    GT --> D4["compound + prediction (ours)"]
-    D1 & D2 & D3 & D4 --> M["metrics: missed / false-alarm / lead<br>(late alert = operational miss)"]
-    M --> OUT([Ground truth is independent of every detector])
-```
+**Status: Planned.** Precursor DNA is the proposed structured safety-risk fingerprint for a report. It may capture potential consequence, exposure, hazard characteristics, control presence/use/failure, recurrence, context, and model confidence where applicable. It is not a probability of death; any example values are illustrative unless backed by approved data and methodology.
 
----
+## 🎯 5. Risk Priority Score
 
-## 🚀 Key capabilities
+**Status: Planned for report intelligence.** The repository implements a separate deterministic 0–100 **sensor/permit compound-risk score** in utils/risk_model.py. It is not a SIF narrative Risk Priority Score and must not be interpreted as fatality probability. The report-level **Risk Priority Score** or **SIF Priority** will be defined only after the report schema, expert-reviewed taxonomy, and evaluation protocol exist.
 
-| Area | What it does |
-| :-- | :-- |
-| **Compound risk** | Graduated continuous 0–100 with per-factor breakdown (live) **+** an auditable rule engine (benchmark); maintenance & shift-changeover escalations. |
-| **Prediction** | Trajectory forecasting → minutes-to-threshold; live predictive stream. |
-| **Counterfactual** | Ranks the single action (revoke permit / ventilate / purge) that most reduces risk, with before/after scores. |
-| **Vision** | Gemini multi-hazard scene understanding online; **custom-trained PyTorch ML Head on 768-dim Vision Transformer (ViT) embeddings** offline (zero label string-matching). |
-| **Agentic Action**| True LangChain ReAct loop equipped with multi-tool calling (RAG manual + TSDB history + MQTT) to autonomously investigate and confirm hazards before shutdown. |
-| **Edge Persistence**| SQLite Time-Series Database (TSDB) for high-throughput IoT sensor ingestion and sliding-window forecasting, surviving server crashes. |
-| **Compliance** | 20 deterministic rules, each cross-referenced to **OISD + Factory Act 1948 + DGMS**. |
-| **Trust & Proof** | Judge-triggerable `POST /api/stress-test` proves a 0% false escalation rate via a structural hard gate on 100 live randomized zero-context anomalies. |
-| **Grounded RAG** | ChromaDB + MiniLM over OISD/Factory Act/DGMS; Gemini synthesis online, sentence-ranked extractive offline; cited, honest. |
-| **Knowledge graph** | Permit-proximity intelligence — flags ignition/intrusive permits in/adjacent to elevated-gas zones. |
-| **Incident intelligence** | Mines a near-miss corpus for recurring prevention priorities + similar-incident retrieval. |
-| **Confidence** | Coverage · decisiveness · freshness — how much to trust each verdict. |
-| **Emergency** | Multilingual (10 languages) spoken evacuation + briefing; robust browser TTS with offline fallback. |
-| **Audit** | Tamper-evident SHA-256 hash-chained evidence log + one-click integrity check. |
-| **Geospatial** | Real Leaflet plant map (auto-locate, risk zones, facilities) + weighted heatmap + graph. |
-| **Industrial hygiene** | PEL/STEL, %LEL, ventilation CFM, purge time, evacuation radius. |
-| **Offline-first** | Local CV + cached embeddings + deterministic engines → works air-gapped. |
+## 💡 6. Explainable AI
 
----
+**Status: Partial foundation.** Current sensor results expose rule triggers, score contributions, compliance findings, confidence dimensions, and suggested interventions. Knowledge responses return source metadata and excerpts; the audit log records sanitized events.
 
-## 🧰 Tech stack
+~~~text
+Evidence → Model Interpretation → Recommendation
+~~~
 
-| Layer | Stack |
-| :-- | :-- |
-| Frontend | React 18 · Vite · Leaflet · Web-Speech TTS (deps kept minimal) |
-| Backend | FastAPI · Uvicorn · Pydantic (warm, lazy-loaded heavy stack) |
-| Database | **SQLite3 Edge TSDB** (Zone telemetry & sliding-window history) |
-| Agents | LangGraph `StateGraph` · **LangChain ReAct Multi-Tool Agent** |
-| ML / CV | **HuggingFace ViT pooler embeddings** · Custom PyTorch MLP · OpenCV · sentence-transformers (MiniLM) |
-| RAG | ChromaDB (persistent) · `all-MiniLM-L6-v2` |
-| Cloud (optional) | Google Gemini (`gemini-2.5-flash` …) — vision + grounded synthesis |
-| Quality | 139 pytest · 16 authoritative acceptance tasks · headless UI tests |
+Evidence must remain distinct from AI inference. Report-level factors, source passages, confidence, and recommendations are planned.
 
----
+## 🔎 7. Semantic Similarity
 
-## ⚡ Quick start
+**Status: Partial foundation.** Embedding retrieval is implemented for the local safety-reference corpus via ChromaDB and all-MiniLM-L6-v2. It is not yet used to compare safety-report narratives.
 
-```powershell
-# Windows PowerShell
-cd $env:USERPROFILE\Desktop\v
-# Windows: always set UTF-8; offline embeddings avoid HF hub hangs
-$env:PYTHONUTF8=1; $env:PYTHONIOENCODING="utf-8"; $env:HF_HUB_OFFLINE=1; $env:TRANSFORMERS_OFFLINE=1
+The structured incident utility uses permit overlap, zone match, gas proximity, and oxygen proximity—not semantic text embeddings. Narrative similarity is planned so “Forklift nearly hit worker,” “Pedestrian almost struck by vehicle,” and “Vehicle entered pedestrian zone” can be reviewed as potentially related patterns despite different wording.
 
-# 1) build the React command center (once)
-cd frontend; npm install; npm run build; cd ..
+## 📈 8. Recurring Precursor Detection
 
-# 2) run the warm backend — it serves BOTH the UI and the API
-.\venv\Scripts\python.exe -m uvicorn backend.main:app --port 8000
-#    → open http://localhost:8000   (API at /api/*, docs at /docs)
-```
-```bash
-# Mac/Linux bash
-cd ~/Desktop/v
-export PYTHONUTF8=1 PYTHONIOENCODING="utf-8" HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+**Status: Partial.** utils/incident_intelligence.py groups the bundled structured incident corpus by hazardous permit, permit pair, and root cause, then ranks results using occurrence and configured severity weights. This is a prototype pattern utility, not narrative SIF recurrence detection.
 
-# 1) build the React command center (once)
-cd frontend && npm install && npm run build && cd ..
+The corpus in knowledge_base/incidents.json includes simulated examples; it is not represented as OIL operational data. Semantic grouping of real narrative reports is planned.
 
-# 2) run the warm backend — it serves BOTH the UI and the API
-./venv/bin/python -m uvicorn backend.main:app --port 8000
-#    → open http://localhost:8000   (API at /api/*, docs at /docs)
-```
+## 🕸️ 9. Safety Knowledge Graph
 
-**Optional cloud accuracy:** put `GEMINI_API_KEY=...` in `.env` (gitignored — never
-committed). Vision → real Gemini scene understanding; Knowledge → grounded synthesis.
-Without it, everything runs **fully offline**.
+**Status: Partial.** The repository uses NetworkX, not Neo4j. Its implemented graph models prototype zone → equipment, permit → zone, and zone adjacency relationships, and flags permits near elevated-gas conditions.
 
-**Alternatives:** `python -m streamlit run ui\app.py --server.port 8502` (all-in-one) ·
-`python -m tools.judge_demo` (offline narrated demo, no browser). **Note for Judges:** We recommend running the `judge_demo.py` script as your primary interactive validation—it guarantees zero API dependencies and proves the core system works fully air-gapped.
+The report-oriented relationship below is proposed:
 
----
+~~~text
+Report → Activity → Hazard → Control → Control Failure
+       → Exposure → Potential Consequence → SIF Precursor
+~~~
 
-## 🔌 Backend API (selected)
+## 📊 10. Trend & Hotspot Analysis
 
-`GET /api/health` · `POST /api/scan` · `GET /api/zones` · `POST /api/forecast` ·
-`GET /api/incidents` · `GET /api/benchmark` · `GET /api/audit/verify` ·
-`POST /api/knowledge` · `POST /api/vision` · `GET /api/exposure` · `POST /api/dispatch` ·
-`POST /api/briefing` · `GET /api/facilities` — full interactive docs at **`/docs`**.
+**Status: Partial.** The current dashboard supports prototype sensor trends/forecasts, zone status, structured incident patterns, and a facility map. It does not provide report-based time, location, department, activity, equipment, hazard, precursor-category, or control-failure hotspot analysis. Those dimensions are planned.
 
----
+## 🧩 11. Root Cause Intelligence
 
-## 🧭 The command center (8 tabs)
+**Status: Partial foundation.** Bundled structured incident data includes a root_cause field, and the prototype pattern utility aggregates it. People, process, equipment, environment, and organizational-factor analysis for narrative reports is planned. AI can assist investigation; it never replaces a formal safety investigation.
 
-**Dashboard** (live risk + breakdown + compound-vs-single + confidence + interventions +
-limits + predictive stream) · **Zone Map** (Leaflet + heatmap + permit-proximity graph) ·
-**Vision** (upload/camera + Gemini/offline badge) · **Knowledge** (RAG chat, saved to
-device) · **Emergency** (multilingual voice dispatch + briefing) · **Safety Tools**
-(exposure calculator + facilities) · **Intelligence** (agent pipeline + incident patterns
-+ tamper-evident audit) · **Benchmark** (methodology + honest results + **live zero-context stress test button**).
+## 🛡️ 12. Control Effectiveness Analysis
 
----
+**Status: Planned.** The target intelligence layer distinguishes:
 
-## ✅ Testing
+~~~text
+Control Exists → Control Used → Control Effective
+~~~
 
-```powershell
-# Windows PowerShell
-python -m pytest -q                                             # ~139 tests, offline-deterministic
-for($i=1;$i -le 16;$i++){ python tools\accept.py ("T{0:D3}" -f $i) }   # 16 acceptance tasks
-python -m tools.benchmark                                       # the compound-vs-single benchmark
-python tools\ui_apptest.py                                      # headless Streamlit UI
-```
-```bash
-# Mac/Linux bash
-./venv/bin/python -m pytest -q
-for i in {1..16}; do ./venv/bin/python tools/accept.py "T$(printf "%03d" $i)"; done
-./venv/bin/python -m tools.benchmark
-./venv/bin/python tools/ui_apptest.py
-```
+The current code can propose sensor/permit interventions but does not establish report-level control use or effectiveness.
 
-All checks pass. Tests require no network.
+## ⚡ 13. Corrective Action Intelligence
 
----
+**Status: Planned for SIF reports.** The sensor prototype returns deterministic recommended interventions and simulated dispatch payloads, but it does not implement corrective-action owner assignment, due dates, status, or verification. These are planned human-managed features; no automated safety authority is claimed.
 
-## 🗂️ Project structure
+## 🤖 14. Safety Copilot
 
-```
-backend/        FastAPI app (serves React + /api/*)
-frontend/       React/Vite SPA (src/{App,tabs,api,lib,voice,i18n})
-agents/         orchestrator + vision/safety/compliance/knowledge/output
-utils/          risk_model · scenario_generator · baseline_detector · forecast ·
-                knowledge_graph · incident_intelligence · confidence · interventions ·
-                limit_check · local_vision · gemini_vision · audit_logger · translations …
-models/         train_hazard_model.py → hazard_model.npz (offline fire model)
-knowledge_base/ build_db.py + raw/safety_standards.md + incidents.json
-compliance/     safety_rules.json (20 rules · tri-framework refs)
-tools/          benchmark · judge_demo · accept · ui_apptest
-tests/          ~139 pytest
-schema.py       IMMUTABLE dataclass contract        CLAUDE.md   engineering contract
-docs/           pitch deck + DEMO_SCRIPT.md + engineering_journal.md + hands-on guide
-ui/             legacy Streamlit app (port 8502)
-```
+**Status: Partial.** The Knowledge view/API queries local safety-reference material through ChromaDB retrieval and returns sources. Optional Gemini synthesis is constrained by retrieved context when configured; otherwise an extractive fallback is used.
 
----
+There is no report-aware copilot combining OIL reports, a report knowledge graph, approved safety knowledge, and corrective-action evidence. That capability is planned.
 
-## 🏆 PS1 evaluation coverage
+## 🎙️ 15. Voice Safety Reporting
 
-| Focus area | How we address it |
-| :-- | :-- |
-| Compound accuracy vs single-sensor | Physics-labeled benchmark, detector-independent ground truth |
-| Prediction lead time | Trajectory forecasting + live stream (~18 min median lead) |
-| Geospatial quality | Real Leaflet map + heatmap + permit-proximity knowledge graph |
-| Regulatory coverage | 20 rules × **OISD + Factory Act 1948 + DGMS** |
-| False-negative reduction | The headline benchmark result (large, honest gap) |
+**Status: Planned / Phase 2.** The repository includes browser text-to-speech for prototype briefings and static multilingual evacuation messages, but not speech-to-text intake for safety reports.
 
----
+~~~text
+Voice → Speech-to-Text → NLP → SIF Precursor Detection → Priority → Action
+~~~
 
-## 📞 Emergency reference
+## 🌐 16. Multilingual Safety Reporting
 
-`112` National Emergency · `101` Fire · `108` Ambulance · `1906` Gas-leak / PESO · `1078` NDMA — all 24×7.
+**Status: Planned for reports.** The prototype has static evacuation templates for English, Hindi, Telugu, Tamil, Marathi, Kannada, Punjabi, Gujarati, Bengali, and Odia, plus browser speech output where a device voice is available. It does not implement multilingual report ingestion, translation validation, or multilingual SIF analysis.
 
-<div align="center">
+## 🖼️ 17. Multimodal Safety Analysis
 
-*Built for high-stakes industrial environments where a wrong answer costs lives.*
-**New here? Read [`HANDOFF.md`](HANDOFF.md) and [`CLAUDE.md`](CLAUDE.md) first.**
+**Status: Partial foundation.** The Vision view accepts an image or camera capture and returns hazard labels from an OpenCV fallback or optional Gemini vision. It does not connect images to safety reports or SIF precursor detection. Multimodal report intelligence is Phase 2.
 
-</div>
+## 🔄 18. Closed-Loop Safety Intelligence
+
+**Status: Planned.**
+
+~~~text
+Detect → Prioritize → Act → Verify → Review New Reports → Improve
+~~~
+
+The current hash-chained audit trail can support traceability, but report-level action tracking and verification are not implemented. No causal prevention outcome is claimed.
+
+## 🖥️ Dashboard
+
+The implemented React dashboard is a **sensor/permit prototype**, not a report-analysis dashboard. Its current views cover:
+
+- Dashboard: sensor/permit controls, risk contributions, confidence, interventions, limits, and simulated live stream.
+- Zone Map: Leaflet facility display, response-facility markers, permit-proximity findings, and a prototype graph.
+- Vision: image upload or camera capture with hazard inspection.
+- Knowledge: RAG questions over local safety references.
+- Emergency and Safety Tools: simulated multilingual dispatch/briefing, exposure calculation, and nearby facilities.
+- Intelligence and Benchmark: structured incident patterns, audit display, and prototype evaluation tooling.
+
+## 📄 Report Analysis View
+
+**Status: Planned.** The target interface will present original narrative, extracted safety entities, SIF precursor analysis, SIF Priority, Precursor DNA, explanation, similar reports, and corrective-action context. These report fields are not currently represented in the frontend or API.
+
+## 🧠 AI / ML Strategy
+
+| Area | Repository evidence | Status |
+|---|---|---|
+| Safety-reference retrieval | ChromaDB and all-MiniLM-L6-v2 | Implemented |
+| Grounded answer synthesis | Optional Gemini; extractive fallback | Implemented |
+| Sensor/permit scoring | Deterministic rules and graduated score | Implemented |
+| Image hazard inspection | OpenCV fallback; optional Gemini; model artifacts/scripts | Implemented prototype |
+| Narrative SIF classifier | No training or inference pipeline found | Planned |
+| Report entity extraction | No implementation found | Planned |
+| Narrative similarity | No implementation found | Planned |
+
+No SIF training methodology, report classifier, model accuracy, benchmark, or OIL data experiment is claimed.
+
+## 📚 Data Strategy
+
+The repository contains local safety-reference material in knowledge_base/raw and a structured incident file at knowledge_base/incidents.json. Bundled incident descriptions include simulated examples and must be treated as prototype/demo data, not confidential OIL operational data.
+
+Any OIL data used in future work requires appropriate authorization. Public, synthetic, expert-created, and operational data must remain clearly distinguishable.
+
+## 🏷️ Data Annotation
+
+**Status: Planned.** No final SIF report dataset schema or annotated OIL dataset is present. A proposed record may include report narrative, activity, hazard, exposure, controls, possible control failure, potential consequence, precursor characteristics, reviewer rationale, and adjudication status. This is proposed, not an OIL standard.
+
+## 🧪 Evaluation Strategy
+
+**Status: Planned for SIF reports.** The repository has prototype tests and sensor-oriented benchmark tooling, which are not evidence of SIF detection performance. A report evaluation should use expert-reviewed labels and measure precision, recall, F1, explanation usefulness, retrieval quality, and knowledge-graph validation. No SIF results are reported here.
+
+## ⚠️ False Positives & False Negatives
+
+False positives can burden reviewers and weaken trust; false negatives can hide an important precursor. Because this is safety decision support, potentially consequential false negatives require special attention, review protocols, and iterative calibration with domain experts. Human review remains mandatory.
+
+## 🔐 Security & Privacy
+
+Current controls include an environment-file pattern for the optional Gemini key and a sanitized, SHA-256 hash-chained JSONL audit trail. The prototype does **not** implement authentication, authorization, role-based access control, production API hardening, or a verified data-protection program; its API currently permits all CORS origins.
+
+Production requirements include authentication, authorization, secure APIs, input validation, audit logging, secret management, encryption/secure storage, controlled access, and data-protection review.
+
+## 🧰 Technology Stack
+
+| Category | Technology | Status |
+|---|---|---|
+| Frontend | React, Vite, Leaflet, React Flow, browser Web Speech | Implemented |
+| Backend | Python, FastAPI, Pydantic, Uvicorn | Implemented |
+| Orchestration | LangGraph | Implemented |
+| Knowledge retrieval | ChromaDB, sentence-transformers all-MiniLM-L6-v2 | Implemented |
+| Knowledge graph | NetworkX prototype graph | Implemented |
+| Vision | OpenCV; optional Gemini; PyTorch/Transformers artifacts/scripts | Implemented prototype |
+| Local persistence | SQLite telemetry; JSON/JSONL prototype data and audit | Implemented |
+| Report NLP / SIF model | Not present | Planned |
+| Report vector search / graph | Not present | Planned |
+| Containerization | No configuration found | Planned |
+
+## 🗂️ Project Structure
+
+~~~text
+agents/          Current orchestration and safety-related agents
+backend/         FastAPI application and MQTT listener
+compliance/      JSON safety-rule data
+data/            Prototype data, audit/evidence artifacts, and plant image
+frontend/        React/Vite web client
+knowledge_base/  Local safety-reference ingestion and incident corpus
+models/          Vision-model training/download artifacts
+tools/           Prototype demos, checks, and benchmark utilities
+ui/              Streamlit prototype interface
+utils/           Risk, retrieval, graph, audit, vision, and support utilities
+tests/           Automated test suite
+schema.py         Shared dataclass contract
+~~~
+
+## 🚀 MVP Scope
+
+### Implemented / Core
+
+- Sensor/permit safety assessment and prototype compliance checks.
+- Safety-reference RAG with citations/source metadata.
+- Structured incident recurrence and similar-record retrieval.
+- Prototype plant knowledge graph and permit-proximity checks.
+- Image hazard inspection, audit log, browser speech output, and static evacuation templates.
+
+### Remaining MVP
+
+- Safety-report upload/storage and validated report schema.
+- Narrative preprocessing, entity extraction, and SIF precursor detection.
+- Precursor DNA, report-level SIF Priority, semantic report similarity, and recurrence.
+- Report-oriented graph, corrective-action ownership/tracking/verification, and report dashboard.
+
+## 🔮 Phase 2
+
+- Voice-report intake and speech-to-text.
+- Multilingual report understanding with safety-review validation.
+- Multimodal fusion of report narratives and images.
+- Advanced grounded Safety Copilot, report hotspot analytics, and approved enterprise integrations.
+
+## 🗓️ Development Roadmap
+
+1. Define an OIL-approved report schema, annotation guide, and access process.
+2. Build report ingestion, preprocessing, and reviewer workflow.
+3. Validate a SIF precursor taxonomy with safety-domain experts.
+4. Implement explainable report detection, Precursor DNA, and SIF Priority.
+5. Add semantic recurrence, report graph links, corrective-action workflow, and verification.
+6. Evaluate with expert-reviewed data before making performance claims.
+
+## 🎬 SIH Demonstration Flow
+
+| Step | Demonstration | Status |
+|---:|---|---|
+| 1 | Upload safety report | Planned |
+| 2 | Process report | Planned |
+| 3 | Extract safety entities | Planned |
+| 4 | Detect SIF precursor characteristics | Planned |
+| 5 | Generate Precursor DNA | Planned |
+| 6 | Show SIF Priority | Planned |
+| 7 | Show evidence-based explanation | Planned |
+| 8 | Show similar reports | Planned |
+| 9 | Show recurring pattern | Planned; structured prototype is not report similarity |
+| 10 | Show report safety knowledge graph | Planned; current graph is sensor/permit oriented |
+| 11 | Show corrective action | Planned |
+| 12 | Track action | Planned |
+| 13 | Verify action | Planned |
+
+## 🏆 Innovation Highlights
+
+| Concept | Status |
+|---|---|
+| Precursor DNA | Proposed |
+| SIF-focused NLP | Planned |
+| Semantic Recurrence Detection | Planned |
+| Report Safety Knowledge Graph | Planned |
+| Explainable Risk Prioritization | Planned for reports; sensor explanations exist |
+| Control Effectiveness | Planned |
+| Grounded Safety Copilot | Partial foundation via safety-reference RAG |
+| Closed-Loop Prevention Workflow | Planned |
+
+## 👥 Team Responsibilities
+
+| Member | Focus |
+|---|---|
+| Member 1 | AI/NLP: preprocessing, entity extraction, precursor modelling, evaluation |
+| Member 2 | Knowledge Graph: ontology, evidence links, recurrence, graph validation |
+| Member 3 | Backend: APIs, data contracts, retrieval, security, auditability |
+| Member 4 | Frontend: reviewer dashboard, explanations, action workflow, accessibility |
+| Member 5 | Integration / Research / Testing: data governance, research, QA, demo integration |
+
+## ⚖️ Responsible AI
+
+PreVanta does **not** claim exact fatality prediction, exact probability of death, guaranteed incident prevention, autonomous safety decisions, or replacement of safety professionals.
+
+PreVanta provides SIF precursor detection, risk prioritization, evidence-based explanations, semantic report comparison, recurring-pattern identification, knowledge-graph relationships, corrective-action support, and human-in-the-loop decision support.
+
+## 👨‍⚖️ Human-in-the-Loop
+
+~~~text
+AI → Analyze → Explain → Prioritize → Recommend
+   → Human Safety Review → Decision → Action
+~~~
+
+The human reviewer validates evidence, considers context, owns the decision, and determines any action.
+
+## 🔐 Responsible Data Usage
+
+Confidential operational data must be used only with appropriate authorization. The target platform requires data minimization, controlled access, anonymization where appropriate, secure storage, retention controls, and auditable use.
+
+## 📌 Project Positioning
+
+> **PreVanta AI transforms fragmented safety reports into explainable early-warning intelligence for SIF precursor detection and preventive action.**
+
+PreVanta AI is an AI/NLP-powered predictive safety intelligence platform being developed to analyze Unsafe-Act, Unsafe-Condition, and Near-Miss reports; identify SIF precursor characteristics; discover recurring patterns; connect hazards and controls through a Safety Knowledge Graph; explain risk priorities; and support corrective-action workflows.
+
+## 🎤 SIH Pitch
+
+PreVanta AI addresses SIH26165 by moving safety-report review from fragmented narratives toward explainable early-warning intelligence. The current prototype demonstrates reusable safety, retrieval, graph, vision, and audit foundations. The SIH MVP will add report-centric NLP, SIF precursor detection, evidence-led prioritization, and a human-reviewed corrective-action workflow.
+
+## 📚 Research Foundation
+
+The design direction is informed by OSHA and IOGP leading-indicator guidance, the NIST AI Risk Management Framework, NLP, transformer embeddings, knowledge graphs, retrieval-augmented generation, and explainable AI. These are conceptual foundations; no unverified papers, statistics, or OIL-specific validation are claimed.
+
+## 📊 Claim & Evidence Policy
+
+### Verified Fact
+
+Supported by an authoritative source or the official SIH problem statement.
+
+### Implemented Feature
+
+Present in repository code and described above with its actual scope.
+
+### Prototype Result
+
+Measured by a documented project evaluation. No SIF prototype result is claimed here.
+
+### Planned Feature
+
+A future capability not represented as working implementation.
+
+## 🚫 No Fabricated Results
+
+This project will not fabricate accuracy, precision, recall, number of reports, prevention percentage, financial savings, ROI, fatality probability, benchmark results, or user-adoption statistics.
+
+## 🧭 Implementation Status
+
+| Capability | Status |
+|---|---|
+| Safety Report Analysis | Planned |
+| NLP Preprocessing | Planned |
+| Safety Entity Extraction | Planned |
+| SIF Precursor Detection | Planned |
+| Precursor DNA | Planned |
+| Risk Priority | Planned for reports; separate sensor score implemented |
+| Explainability | Partial |
+| Semantic Similarity | Partial foundation |
+| Recurring Precursor Detection | Partial structured prototype |
+| Safety Knowledge Graph | Partial sensor/permit prototype |
+| Corrective Action Workflow | Planned |
+| Dashboard | Partial sensor/permit prototype |
+| Voice Reporting | Phase 2 |
+| Multilingual Reporting | Planned |
+| Image Analysis | Implemented prototype |
+| Safety Copilot | Partial safety-reference RAG |
+
+## 🌱 Future Vision
+
+~~~text
+Today:  Safety Reports → SIF Precursor Detection → Explainable Prioritization
+        → Pattern Intelligence → Corrective Actions
+Future: Voice → Multilingual → Vision → Multimodal Safety Intelligence
+~~~
+
+## 🎯 Final Vision
+
+~~~text
+REACTIVE:  Report Review → Incident Understanding
+PROACTIVE: Precursor Detection → Pattern Intelligence → Explainable Prioritization
+           → Preventive Action → Verification
+~~~
