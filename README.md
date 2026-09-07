@@ -369,11 +369,12 @@ schema.py         Shared dataclass contract
 
 | Member | Focus |
 |---|---|
-| Member 1 | AI/NLP: preprocessing, entity extraction, precursor modelling, evaluation |
-| Member 2 | Knowledge Graph: ontology, evidence links, recurrence, graph validation |
-| Member 3 | Backend: APIs, data contracts, retrieval, security, auditability |
-| Member 4 | Frontend: reviewer dashboard, explanations, action workflow, accessibility |
-| Member 5 | Integration / Research / Testing: data governance, research, QA, demo integration |
+| RITESH PAITHANKAR | AI/NLP: preprocessing, entity extraction, precursor modelling, evaluation |
+| RUTUJA PAWAR | Knowledge Graph: ontology, evidence links, recurrence, graph validation |
+| NIRAJ KHARAT | Backend: APIs, data contracts, retrieval, security, auditability |
+| GANESH TAUR | Frontend: reviewer dashboard, explanations, action workflow, accessibility |
+| SUMIT RATHOD | Integration / Research / Testing: data governance, research, QA, demo integration |
+| SARTHAK KATORE | Integration / Research / Testing: data governance, research, QA, demo integration |
 
 ## ⚖️ Responsible AI
 
